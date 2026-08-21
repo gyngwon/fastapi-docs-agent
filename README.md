@@ -27,14 +27,14 @@ whenever the docs change), and one that runs per question.
 
 ```mermaid
 flowchart LR
-    subgraph Ingestion["📥 Ingestion — run once"]
+    subgraph Ingestion["Ingestion — run once"]
         direction TB
         A[FastAPI docs<br/>.md files] --> B[Chunker<br/>headers + sliding window]
         B --> C[Embedding model<br/>sentence-transformers]
         C --> D[(Chroma<br/>vector DB)]
     end
 
-    subgraph Query["💬 Query — per question"]
+    subgraph Query["Query — per question"]
         direction TB
         E[User question] --> F[Embed query]
         F --> G{Claude}
