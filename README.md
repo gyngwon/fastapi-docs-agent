@@ -26,21 +26,29 @@ There are two separate flows: one that builds the index (run once, or
 whenever the docs change), and one that runs per question.
 
 ```mermaid
-flowchart TD
-    subgraph Ingestion["Ingestion (run once)"]
-        A[FastAPI docs .md files] -->|chunk: headers + sliding window| B[Chunks + metadata]
-        B -->|embed: sentence-transformers| C[Vector embeddings]
-        C -->|store| D[(Chroma vector DB)]
+flowchart LR
+    subgraph Ingestion["📥 Ingestion — run once"]
+        direction TB
+        A[FastAPI docs<br/>.md files] --> B[Chunker<br/>headers + sliding window]
+        B --> C[Embedding model<br/>sentence-transformers]
+        C --> D[(Chroma<br/>vector DB)]
     end
 
-    subgraph Query["Query (per question)"]
-        E[User question] -->|embed| F[Query vector]
-        F -->|similarity search| D
-        D -->|top-k relevant chunks| G[Claude]
-        G -->|tool: search_docs| D
-        G -->|tool: search_github_issues| H[GitHub REST API]
-        G --> I[Grounded, cited answer]
+    subgraph Query["💬 Query — per question"]
+        direction TB
+        E[User question] --> F[Embed query]
+        F --> G{Claude}
+        G -->|search_docs| D
+        G -->|search_github_issues| H[GitHub API]
+        D -.-> G
+        H -.-> G
+        G --> I[Answer with citations]
     end
+
+    classDef store fill:#4c8bf5,stroke:#1a56c4,color:#fff
+    classDef brain fill:#f5a623,stroke:#b9770e,color:#fff
+    class D store
+    class G brain
 ```
 
 Two answer modes are planned:
@@ -72,15 +80,18 @@ cp .env.example .env            # then add your ANTHROPIC_API_KEY
 ```
 
 ## Project structure
+
+```
 src/
-chunking.py header-aware markdown chunking
-embeddings.py text -> vector (sentence-transformers)
-ingest.py builds the vector index (run once)
-retriever.py query-time vector search
+  chunking.py       header-aware markdown chunking
+  embeddings.py     text -> vector (sentence-transformers)
+  ingest.py         builds the vector index (run once)
+  retriever.py      query-time vector search
 data/
-raw_docs/ FastAPI documentation (from fastapi/fastapi, docs/en/docs)
-chroma_db/ vector index (generated, not committed)
+  raw_docs/         FastAPI documentation (from fastapi/fastapi, docs/en/docs)
+  chroma_db/        vector index (generated, not committed)
 tests/
+```
 
 ## Data source
 
