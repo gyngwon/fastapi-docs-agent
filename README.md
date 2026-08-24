@@ -86,8 +86,8 @@ sequenceDiagram
 | Header-aware markdown chunking (`src/chunking.py`) | done |
 | Bug fixes + data hygiene + unit tests | done |
 | Embeddings + vector store (`src/embeddings.py`, `src/ingest.py`, `src/retriever.py`) | done |
-| Plain RAG answer generation (`src/rag.py`) | in progress |
-| Agentic RAG with tool use (`src/agent.py`) | planned |
+| Plain RAG answer generation (`src/rag.py`) | done |
+| Agentic RAG with tool use (`src/agent.py`) | in progress |
 | CLI + retrieval evaluation | planned |
 
 ## Setup
