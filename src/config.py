@@ -14,3 +14,8 @@ assert CHUNK_OVERLAP_CHARS < CHUNK_SIZE_CHARS, (
     "CHUNK_OVERLAP_CHARS must be smaller than CHUNK_SIZE_CHARS, "
     "otherwise chunking will loop forever"
 )
+# --- 임베딩 / 벡터스토어 ---
+CHROMA_DB_DIR = ROOT_DIR / "data" / "chroma_db"
+COLLECTION_NAME = "fastapi_docs"
+EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+TOP_K = 5
