@@ -15,7 +15,7 @@ Enterprise knowledge search — "let people ask questions against a large,
 evolving set of documents and get grounded, cited answers" — is one of the
 most common applied-AI use cases in industry today (internal wikis,
 customer support, developer docs). This project reproduces that pattern on
-a real, sizable public documentation set (155 files / ~2,300 chunks) from
+a real, sizable public documentation set (153 files / ~1,284 chunks) from
 FastAPI, chosen because it's well-structured, code-heavy (a realistic
 stress test for retrieval), and free of any data/privacy concerns.
 
@@ -26,14 +26,14 @@ whenever the docs change), and one that runs per question.
 
 ```mermaid
 flowchart LR
-    subgraph Ingestion["Ingestion — run once"]
+    subgraph Ingestion["📥 Ingestion — run once"]
         direction TB
         A[FastAPI docs<br/>.md files] --> B[Chunker<br/>headers + sliding window]
         B --> C[Embedding model<br/>sentence-transformers]
         C --> D[(Chroma<br/>vector DB)]
     end
 
-    subgraph Query["Query — per question"]
+    subgraph Query["💬 Query — per question"]
         direction TB
         E[User question] --> F[Embed query]
         F --> G{Claude}
@@ -50,9 +50,16 @@ flowchart LR
     class G brain
 ```
 
-### Request flow
+Two answer modes are planned:
 
-How a single question moves through the system, step by step:
+- **Plain RAG** — a fixed pipeline: retrieve top-k chunks, then one Claude
+  call with that context as a source of truth.
+- **Agentic RAG** — Claude is given both tools and decides for itself
+  whether to search the docs, search GitHub, both, or neither.
+
+## Request flow
+
+How a single question moves through the plain-RAG path, step by step:
 
 ```mermaid
 sequenceDiagram
@@ -71,19 +78,13 @@ sequenceDiagram
     R-->>User: final answer + citations
 ```
 
-Two answer modes are planned:
-
-- **Plain RAG** — a fixed pipeline: retrieve top-k chunks, then one Claude
-  call with that context as a source of truth.
-- **Agentic RAG** — Claude is given both tools and decides for itself
-  whether to search the docs, search GitHub, both, or neither.
-
 ## Project status
 
 | Step | Status |
 |---|---|
 | Fetch FastAPI documentation (`data/raw_docs/`) | done |
 | Header-aware markdown chunking (`src/chunking.py`) | done |
+| Bug fixes + data hygiene + unit tests | done |
 | Embeddings + vector store (`src/embeddings.py`, `src/ingest.py`, `src/retriever.py`) | done |
 | Plain RAG answer generation (`src/rag.py`) | in progress |
 | Agentic RAG with tool use (`src/agent.py`) | planned |
@@ -107,12 +108,13 @@ src/
   embeddings.py     text -> vector (sentence-transformers)
   ingest.py         builds the vector index (run once)
   retriever.py      query-time vector search
-  llm_client.py     Anthropic API client wrapper
-  rag.py            retrieval + grounded answer generation
+  llm_client.py     Anthropic client wrapper
+  rag.py            plain RAG answer generation
 data/
   raw_docs/         FastAPI documentation (from fastapi/fastapi, docs/en/docs)
   chroma_db/        vector index (generated, not committed)
 tests/
+  test_chunking.py  unit tests for the chunking logic
 ```
 
 ## Data source
