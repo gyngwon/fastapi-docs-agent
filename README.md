@@ -1,4 +1,3 @@
-cat > README.md << 'DOCEOF'
 # FastAPI Docs Agent
 
 A retrieval-augmented, tool-using assistant that answers questions about
@@ -51,6 +50,27 @@ flowchart LR
     class G brain
 ```
 
+### Request flow
+
+How a single question moves through the system, step by step:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant R as rag.py
+    participant L as llm_client.py
+    participant C as Claude
+
+    User->>R: question
+    Note over R: ① retrieve top-k chunks<br/>② select chunks<br/>③ build context<br/>④ build prompt
+    R->>L: generate(prompt)
+    L->>C: messages.create(system, prompt)
+    C-->>L: response
+    L-->>R: answer text
+    R-->>User: final answer + citations
+```
+
 Two answer modes are planned:
 
 - **Plain RAG** — a fixed pipeline: retrieve top-k chunks, then one Claude
@@ -87,6 +107,8 @@ src/
   embeddings.py     text -> vector (sentence-transformers)
   ingest.py         builds the vector index (run once)
   retriever.py      query-time vector search
+  llm_client.py     Anthropic API client wrapper
+  rag.py            retrieval + grounded answer generation
 data/
   raw_docs/         FastAPI documentation (from fastapi/fastapi, docs/en/docs)
   chroma_db/        vector index (generated, not committed)
@@ -97,25 +119,3 @@ tests/
 
 Documentation content: [fastapi/fastapi](https://github.com/fastapi/fastapi),
 `docs/en/docs/`, used here for a non-commercial learning/portfolio project.
-DOCEOF
-
-## Request flow
-
-How a single question moves through the system, step by step:
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User
-    participant R as rag.py
-    participant L as llm_client.py
-    participant C as Claude
-
-    User->>R: question
-    Note over R: ① retrieve top-k chunks<br/>② select chunks<br/>③ build context<br/>④ build prompt
-    R->>L: generate(prompt)
-    L->>C: messages.create(system, prompt)
-    C-->>L: response
-    L-->>R: answer text
-    R-->>User: final answer + citations
-```
