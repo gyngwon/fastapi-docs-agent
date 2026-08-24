@@ -7,5 +7,10 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 RAW_DOCS_DIR = ROOT_DIR / "data" / "raw_docs"
 
 # --- 청킹 ---
-CHUNK_SIZE_CHARS = 1200   # 한 청크 최대 글자 수
-CHUNK_OVERLAP_CHARS = 200  # 슬라이딩 윈도우 겹치는 글자 수
+CHUNK_SIZE_CHARS = 1200
+CHUNK_OVERLAP_CHARS = 200
+
+assert CHUNK_OVERLAP_CHARS < CHUNK_SIZE_CHARS, (
+    "CHUNK_OVERLAP_CHARS must be smaller than CHUNK_SIZE_CHARS, "
+    "otherwise chunking will loop forever"
+)
