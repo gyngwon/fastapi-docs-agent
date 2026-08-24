@@ -64,8 +64,8 @@ Two answer modes are planned:
 |---|---|
 | Fetch FastAPI documentation (`data/raw_docs/`) | done |
 | Header-aware markdown chunking (`src/chunking.py`) | done |
-| Embeddings + vector store (`src/embeddings.py`, `src/ingest.py`, `src/retriever.py`) | in progress |
-| Plain RAG answer generation (`src/rag.py`) | planned |
+| Embeddings + vector store (`src/embeddings.py`, `src/ingest.py`, `src/retriever.py`) | done |
+| Plain RAG answer generation (`src/rag.py`) | in progress |
 | Agentic RAG with tool use (`src/agent.py`) | planned |
 | CLI + retrieval evaluation | planned |
 
