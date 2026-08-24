@@ -19,3 +19,12 @@ CHROMA_DB_DIR = ROOT_DIR / "data" / "chroma_db"
 COLLECTION_NAME = "fastapi_docs"
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
 TOP_K = 5
+
+# --- Claude API ---
+import os
+from dotenv import load_dotenv
+
+load_dotenv(ROOT_DIR / ".env")
+
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-5")
