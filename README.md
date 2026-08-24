@@ -98,3 +98,24 @@ tests/
 Documentation content: [fastapi/fastapi](https://github.com/fastapi/fastapi),
 `docs/en/docs/`, used here for a non-commercial learning/portfolio project.
 DOCEOF
+
+## Request flow
+
+How a single question moves through the system, step by step:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant R as rag.py
+    participant L as llm_client.py
+    participant C as Claude
+
+    User->>R: question
+    Note over R: ① retrieve top-k chunks<br/>② select chunks<br/>③ build context<br/>④ build prompt
+    R->>L: generate(prompt)
+    L->>C: messages.create(system, prompt)
+    C-->>L: response
+    L-->>R: answer text
+    R-->>User: final answer + citations
+```
