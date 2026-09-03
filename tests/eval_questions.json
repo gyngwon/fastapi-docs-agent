@@ -1,0 +1,17 @@
+[
+  {"question": "How do I declare a path parameter with a numeric type in FastAPI?", "expected_source": "tutorial/path-params.md"},
+  {"question": "How do I add validation constraints to numeric path parameters?", "expected_source": "tutorial/path-params-numeric-validations.md"},
+  {"question": "How do I declare query parameters and set defaults?", "expected_source": "tutorial/query-params.md"},
+  {"question": "How do I define a request body using a Pydantic model?", "expected_source": "tutorial/body.md"},
+  {"question": "How do I run background tasks after returning a response?", "expected_source": "tutorial/background-tasks.md"},
+  {"question": "How do I enable CORS in a FastAPI app?", "expected_source": "tutorial/cors.md"},
+  {"question": "How do I handle and customize exceptions and errors in FastAPI?", "expected_source": "tutorial/handling-errors.md"},
+  {"question": "How do I write tests for a FastAPI application using TestClient?", "expected_source": "tutorial/testing.md"},
+  {"question": "How do I structure a bigger FastAPI application with multiple files and APIRouter?", "expected_source": "tutorial/bigger-applications.md"},
+  {"question": "How do I connect FastAPI to a SQL database?", "expected_source": "tutorial/sql-databases.md"},
+  {"question": "How do I add custom middleware to a FastAPI application?", "expected_source": "advanced/middleware.md"},
+  {"question": "How do I use WebSockets in FastAPI?", "expected_source": "advanced/websockets.md"},
+  {"question": "How do I run code on startup and shutdown using lifespan events?", "expected_source": "advanced/events.md"},
+  {"question": "How do I manage application settings and environment variables?", "expected_source": "advanced/settings.md"},
+  {"question": "How do I return a custom response class instead of the default JSON response?", "expected_source": "advanced/custom-response.md"}
+]
